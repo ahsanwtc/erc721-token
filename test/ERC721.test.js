@@ -20,8 +20,8 @@ contract('ERC721', accounts => {
 
   it('should mint a new token', async () => {
     const transaction = await nft.mint({ from: admin });
-    assert((await nft.getTokenCount(admin)).toNumber() == 1);
-    assert((await nft.getTokenOwner(0)) == admin);
+    assert((await nft.balanceOf(admin)).toNumber() == 1);
+    assert((await nft.ownerOf(0)) == admin);
     await expectEvent(transaction, 'Transfer', {
       _from: '0x0000000000000000000000000000000000000000',
       _to: admin,
@@ -35,5 +35,7 @@ contract('ERC721', accounts => {
       'only admin'
     );
   });
+
+
 
 });
