@@ -199,6 +199,7 @@ contract ERC721 is IERC721 {
   function _safeTransfer(address _from, address _to, uint _tokenId, bytes memory data) internal {
     if (_to.isContract()) {
       bytes4 code = IERC721TokenReceiver(_to).onERC721Received(msg.sender, _from, _tokenId, data);
+      string memory bar = string(abi.encodePacked(code));
       require(code == MAGIC_ON_ERC721_RECEIVED, "recepient can't ERC721 tokens");
     }
 
