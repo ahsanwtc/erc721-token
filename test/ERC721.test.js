@@ -63,4 +63,22 @@ contract('ERC721', accounts => {
     );
   });
 
+  it('should approve', async () => {
+    const transaction = await nft.approve(operatorForUser, tokenOne, { from: user });
+    const approved = await nft.getApproved(tokenOne);
+    assert(approved == operatorForUser);
+    await expectEvent(transaction, 'Approval', {
+      _owner: user,
+      _approved: operatorForUser,
+      _tokenId: web3.utils.toBN(tokenOne)
+    });
+  });
+
+  it('should NOT approve if caller is not owner', async () => {
+    await expectRevert(
+      nft.approve(operatorForUser, tokenOne, { from: admin }),
+      'not authorized'
+    );
+  });
+
 });
