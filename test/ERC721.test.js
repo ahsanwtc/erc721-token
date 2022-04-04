@@ -8,7 +8,7 @@ const ERC721 = artifacts.require("ERC721");
  */
 contract('ERC721', accounts => {
   let nft = null;
-  const [admin, user, operatorForUser, approvedByAdmin] = accounts;
+  const [admin, user, operatorForUser, approvedByUserForAll] = accounts;
   const tokenOne = 0, tokenTwo = 1, tokenThree = 2;
   
   before(async () => {
@@ -79,6 +79,28 @@ contract('ERC721', accounts => {
       nft.approve(operatorForUser, tokenOne, { from: admin }),
       'not authorized'
     );
+  });
+
+  it('should approve for all', async () => {
+    const transaction = await nft.setApprovalForAll(operatorForUser, true, { from: user });
+    const isApprovedForAll = await nft.isApprovedForAll(user, operatorForUser);
+    assert(isApprovedForAll == true);
+    await expectEvent(transaction, 'ApprovalForAll', {
+      _owner: user,
+      _operator: operatorForUser,
+      _approved: true
+    });
+  });
+
+  it('should disapprove for all', async () => {
+    const transaction = await nft.setApprovalForAll(operatorForUser, false, { from: user });
+    const isApprovedForAll = await nft.isApprovedForAll(user, operatorForUser);
+    assert(isApprovedForAll == false);
+    await expectEvent(transaction, 'ApprovalForAll', {
+      _owner: user,
+      _operator: operatorForUser,
+      _approved: false
+    });
   });
 
 });
