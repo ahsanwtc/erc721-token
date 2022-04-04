@@ -1,0 +1,23 @@
+{
+  "name": "erc721",
+  "version": "1.0.0",
+  "description": "An implementation of ERC721 token standard.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ahsanwtc/erc721-token.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ahsanwtc/erc721-token/issues"
+  },
+  "homepage": "https://github.com/ahsanwtc/erc721-token#readme",
+  "dependencies": {
+    "@openzeppelin/test-helpers": "^0.5.15"
+  }
+}
