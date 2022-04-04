@@ -216,6 +216,14 @@ contract ERC721 is IERC721 {
     return MAGIC_ON_ERC721_RECEIVED;
   }
 
+  function getTokenCount(address _owner) view public returns(uint) {
+    return ownerToTokenCount[_owner];
+  }
+
+  function getTokenOwner(uint _tokenId) view public returns(address) {
+    return tokenToOwner[_tokenId];
+  }
+
   modifier canTransfer(uint _tokenId) {
     /* owner can transfer token */
     /* approved address by owner can transfer token */

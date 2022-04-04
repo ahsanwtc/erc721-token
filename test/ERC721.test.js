@@ -1,3 +1,4 @@
+const { expectEvent, expectRevert } = require('@openzeppelin/test-helpers');
 const ERC721 = artifacts.require("ERC721");
 
 /*
@@ -7,7 +8,7 @@ const ERC721 = artifacts.require("ERC721");
  */
 contract('ERC721', accounts => {
   let nft = null;
-  const [admin] = accounts;
+  const [admin, user] = accounts;
   
   before(async () => {
     nft = await ERC721.deployed();
@@ -15,6 +16,24 @@ contract('ERC721', accounts => {
 
   it('should deploy correctly', async () => {
     assert((await nft.admin()) == admin);
+  });
+
+  it('should mint a new token', async () => {
+    const transaction = await nft.mint({ from: admin });
+    assert((await nft.getTokenCount(admin)).toNumber() == 1);
+    assert((await nft.getTokenOwner(0)) == admin);
+    await expectEvent(transaction, 'Transfer', {
+      _from: '0x0000000000000000000000000000000000000000',
+      _to: admin,
+      _tokenId: web3.utils.toBN(0)
+    });
+  });
+
+  it('should NOT mint token if caller is not admin', async () => {
+    await expectRevert(
+      nft.mint({ from: user }),
+      'only admin'
+    );
   });
 
 });
